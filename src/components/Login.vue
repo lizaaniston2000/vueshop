@@ -9,6 +9,12 @@
     </div>
 </template>
 
+<script>
+export default {
+    
+}
+</script>
+
 <style scoped>
 .light__card{
     display: flex;
