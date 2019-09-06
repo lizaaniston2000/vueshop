@@ -22,7 +22,7 @@ export default {
 		registerIt() {
 			axios.post('http://smktesting.herokuapp.com/api/register/',this.register)
 			.then(response => {
-			    let token=response.data.user.api_token;
+			    let token=response.data.token;
 
 				localStorage.setItem('token',token);
 
