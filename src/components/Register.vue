@@ -1,13 +1,16 @@
 <template>
     <div class="light__card">
-        <h1>Register</h1>
+        <h1>Sign Up</h1>
         <div class="form-column_inp">
             <input type="text" placeholder="username*" class="input form_input" v-model="register.username">
-            <input type="text" placeholder="password*" class="input form_input" v-model="register.password">
-            <button class="but" @click='registerIt'>Register</button>
+            <input type="password" placeholder="password*" class="input form_input" v-model="register.password">
+            <button class="but" @click='registerIt'>Sign Up</button>
         </div>
     </div>
 </template>
+
+
+
 <script>
 export default {
     data() {
@@ -20,11 +23,14 @@ export default {
     },
     methods:{
 		registerIt() {
-			axios.post('http://smktesting.herokuapp.com/api/register/',this.register)
+		    axios.post('http://smktesting.herokuapp.com/api/register/',this.register)
 			.then(response => {
+
 			    let token=response.data.token;
 
-				localStorage.setItem('token',token);
+                localStorage.setItem('Authorization', 'Token '+ token);
+
+                this.$router.push('/thanks');
 
 			});
 		}
@@ -32,11 +38,13 @@ export default {
 }
 </script>
 
-<style scoped>
+
+<style>
 .light__card{
     display: flex;
     flex-direction: column;
     align-items: center;
+    margin-top: 50px;
 }
 h1{
    font-size: 40px;

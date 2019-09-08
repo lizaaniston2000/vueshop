@@ -1,17 +1,40 @@
 <template>
     <div class="light__card">
-        <h1>Login</h1>
+        <h1>Sign In</h1>
         <div class="form-column_inp">
-            <input type="text" placeholder="username*" class="input form_input">
-            <input type="text" placeholder="password*" class="input form_input">
-            <button class="but">Login</button>
+            <input type="text" placeholder="username*" class="input form_input"  v-model="login.username">
+            <input type="password" placeholder="password*" class="input form_input"  v-model="login.password">
+            <button class="but" @click='logItIn'>Sign In</button>
         </div>
     </div>
 </template>
 
 <script>
 export default {
-    
+    data() {
+		return {
+			login:{
+				username:"",
+				password:""
+			}
+		}
+    },
+    methods:{
+		logItIn() {
+		    axios.post('http://smktesting.herokuapp.com/api/login/',this.login)
+			.then(response => {
+
+			    let token=response.data.token;
+
+                localStorage.setItem('Authorization', 'Token '+token);
+
+                //axios.defaults.headers.common['Authorization'] = 'Token ' + token;
+                Event.$emit('login');
+
+                this.$router.push('/');
+			});
+		}
+	}
 }
 </script>
 
@@ -20,6 +43,7 @@ export default {
     display: flex;
     flex-direction: column;
     align-items: center;
+    margin-top: 50px;
 }
 h1{
    font-size: 40px;

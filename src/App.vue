@@ -3,11 +3,14 @@
     <div class="navbar">
       <div class="container">
         <div class="navbar-wrap">
-            <router-link to="/" class="title">{{ title }}</router-link>
+            <router-link to="/" class="title">vueshop</router-link>
             <nav class="menu">
-              <ul class="menu__items">
-                <li><router-link to="/login">Login</router-link></li>
-                <li><router-link to="/register">Register</router-link></li>
+              <ul class="menu__items"  v-if='!loggedIn'>
+                <li><router-link to="/login">Sign In</router-link></li>
+                <li><router-link to="/register">Sign Up</router-link></li>
+              </ul>
+              <ul class="menu__items"  v-if='loggedIn'>
+                <li><router-link to="/logout" >Logout</router-link></li>
               </ul>
             </nav>
         </div>
@@ -20,16 +23,38 @@
     </main>
   </div>
 </template>
+
+
 <script>
 export default {
   data () {
     return {
-      title: 'VueShop',
       loggedIn:false
       }
     },
+  created(){
+    this.redirectGuestToLogin();
+
+    Event.$on('login',()=>{
+      this.loggedIn=true;
+    });
+
+    Event.$on('logout',()=>{
+      this.loggedIn=false;
+    });
+
+  },
+  methods:{
+    redirectGuestToLogin(){
+      if (!token) {
+        return this.$router.push('/login');
+      }
+    }
+  }
 }
 </script>
+
+
 <style>
 @font-face {
   font-family: Geomanist-Book;
