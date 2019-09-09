@@ -15,28 +15,85 @@
                 <p> {{review.text}}</p>
                 <p>Rate: {{review.rate}}</p>
             </div>
+            <p class="p_review">Please, post your review:)</p>
+            <textarea placeholder="Message*" class="form_textarea" v-model="comment.text"></textarea>
+            <p class="p_review">Your rate: </p>
+            <div class="radio_group">
+                <input type="radio" name="rate" value="1" v-model="comment.rate">
+                <label>1</label>
+                <br>
+                <input type="radio" name="rate" value="2" v-model="comment.rate">
+                <label >2</label>
+                <br>
+                <input type="radio" name="rate" value="3" v-model="comment.rate">
+                <label >3</label>
+                <br>
+                <input type="radio" name="rate" value="4" v-model="comment.rate">
+                <label >4</label>
+                <br>
+                <input type="radio" name="rate" value="5" v-model="comment.rate">
+                <label >5</label>
+                <br>
+            </div>
+            <button class="but" @click='postReview'>ok</button>
         </div>
     </div>
 </template>
 
 
 <script>
+import Vue from 'vue'
 export default {
     data(){
         return{
             product:[],
-            reviews:[]
+            reviews:[],
+            comment:{
+                text:'',
+                rate:''
+            }
         }
     },
     mounted:function(){
         axios.get("http://smktesting.herokuapp.com/api/products/").then((response) => {
             this.product = response.data.find((item) => {
                 return (item.id === Number(this.$route.params.id));
+            });
+        return this.product;
+        })
+        .then(product => {
+            axios.get("http://smktesting.herokuapp.com/api/reviews/"+product.id).then((response) => {
+                this.reviews = response.data;
             })
-        })
-        axios.get("http://smktesting.herokuapp.com/api/reviews/"+this.product.id).then((response) => {
-            this.reviews = response.data;
-        })
+        });
+    },
+    methods: {
+        showAlert(){
+            // Use sweetalret2
+            this.$swal('Please sign in or sign up:)');
+        },
+        postReview(){
+            const token=localStorage.getItem('Authorization');
+            if(!token){
+                this.showAlert();
+            }
+            let new_comment=new Object;
+                new_comment.text=this.comment.text;
+                new_comment.rate=this.comment.rate;
+            axios.get("http://smktesting.herokuapp.com/api/products/").then((response) => {
+                this.product = response.data.find((item) => {
+                    return (item.id === Number(this.$route.params.id));
+                });
+            return this.product;
+            }) //get one product
+            .then(product => {
+                axios.post("http://smktesting.herokuapp.com/api/reviews/"+ product.id).then((response) => {
+                    text: this.comment.text;
+                    rate: this.comment.rate;
+                })
+            }) //post data of product 
+            this.reviews.push(new_comment) 
+        }
     },
 }
 </script>
@@ -60,11 +117,58 @@ export default {
     }
     h1{
         text-align: center;
+        margin-top: 10px;
+    }
+    .review{
+        display:flex;
+        flex-direction: column;
+        align-items: center;
+        margin-bottom: 20px;
     }
     .review_area{
-        width: 300px;
+        width: 350px;
         border: 1px solid  #454449;
         border-radius: 5px;
         height: 100px;
+        margin-bottom: 20px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        padding-left:20px;
+    }
+    .form_textarea{
+        outline: none;
+        border-radius: 5px;
+        border: 1px solid  #454449;
+        height:100px;
+        width:350px;
+        padding: 18px 20px;
+        resize: none;
+        margin-bottom: 20px;
+        background-color: transparent;
+    }
+    .form_textarea::placeholder{
+        font-family: Geomanist-Book;
+        text-transform: uppercase;
+        font-size: 14px;
+        font-weight: 700;
+    }
+    .p_review{
+        margin-bottom: 10px;
+    }
+    .radio_group{
+        margin-bottom: 20px;
+    }
+    .but{
+        border: 1px solid #454449;
+        text-transform: uppercase;
+        padding: 16px 30px;
+        outline: none;
+        background-color: transparent;
+        color: #15141a;
+        font-weight: 700;
+        font-size: 14px;
+        cursor: pointer;
+        border-radius: 4px; 
     }
 </style>

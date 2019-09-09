@@ -46,6 +46,7 @@ export default {
   },
   methods:{
     redirectGuestToLogin(){
+      const token=localStorage.getItem('Authorization');
       if (!token) {
         return this.$router.push('/login');
       }

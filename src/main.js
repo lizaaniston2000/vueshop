@@ -3,14 +3,14 @@ import App from './App'
 import axios from 'axios'
 import router from './router';
 import Router from 'vue-router';
+import VueSweetalert2 from 'vue-sweetalert2';
+
+
+Vue.use(VueSweetalert2);
+Vue.use(Router);
 
 
 window.axios=axios;
-window.token=localStorage.getItem('Authorization');
-
-Vue.use(Router);
-Vue.config.productionTip = false
-
 window.Event= new Vue;
 
 

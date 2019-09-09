@@ -32,6 +32,7 @@ export default {
 
                 this.$router.push('/thanks');
 
+                axios.defaults.headers.common['Authorization'] = 'Token ' + token;
 			});
 		}
 	}
@@ -64,7 +65,6 @@ h1{
     text-transform: uppercase;
     font-size: 14px;
     font-weight: 700;
-    opacity: 0.2;
 }
 .form-column_inp{
     height: 188px;
