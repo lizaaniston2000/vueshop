@@ -9,8 +9,11 @@ import VueSweetalert2 from 'vue-sweetalert2';
 Vue.use(VueSweetalert2);
 Vue.use(Router);
 
+const token = localStorage.getItem('Authorization')
+if (token) {
+  axios.defaults.headers.common['Authorization'] = token
+}
 
-window.axios=axios;
 window.Event= new Vue;
 
 

@@ -5,12 +5,12 @@
         <div class="navbar-wrap">
             <router-link to="/" class="title">vueshop</router-link>
             <nav class="menu">
-              <ul class="menu__items"  v-if='!loggedIn'>
+              <ul class="menu__items"  v-if="auth==''">
                 <li><router-link to="/login">Sign In</router-link></li>
                 <li><router-link to="/register">Sign Up</router-link></li>
               </ul>
-              <ul class="menu__items"  v-if='loggedIn'>
-                <li><router-link to="/logout" >Logout</router-link></li>
+              <ul class="menu__items"  v-if="auth=='loggedin'">
+                <li><a href='' @click="logout">Logout</a></li>
               </ul>
             </nav>
         </div>
@@ -29,28 +29,18 @@
 export default {
   data () {
     return {
-      loggedIn:false
+        auth:''
       }
     },
-  created(){
-    this.redirectGuestToLogin();
-
-    Event.$on('login',()=>{
-      this.loggedIn=true;
-    });
-
-    Event.$on('logout',()=>{
-      this.loggedIn=false;
-    });
-
-  },
-  methods:{
-    redirectGuestToLogin(){
-      const token=localStorage.getItem('Authorization');
-      if (!token) {
-        return this.$router.push('/login');
-      }
+  methods: {
+    logout () {
+      localStorage.removeItem('Authorization')
     }
+  },
+  mounted(){
+    Event.$on('logged-in', status => {
+      this.auth = status
+    })
   }
 }
 </script>

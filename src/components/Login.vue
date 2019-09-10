@@ -1,15 +1,16 @@
 <template>
     <div class="light__card">
         <h1>Sign In</h1>
-        <div class="form-column_inp">
+        <form class="form-column_inp" v-on:submit.prevent="logItIn">
             <input type="text" placeholder="username*" class="input form_input"  v-model="login.username">
             <input type="password" placeholder="password*" class="input form_input"  v-model="login.password">
-            <button class="but" @click='logItIn'>Sign In</button>
-        </div>
+            <button  type="submit" class="but">Sign In</button>
+        </form>
     </div>
 </template>
 
 <script>
+import axios from 'axios'
 export default {
     data() {
 		return {
@@ -21,20 +22,27 @@ export default {
     },
     methods:{
 		logItIn() {
-		    axios.post('http://smktesting.herokuapp.com/api/login/',this.login)
-			.then(response => {
-
-			    let token=response.data.token;
-
-                localStorage.setItem('Authorization', 'Token '+token);
-
-                //axios.defaults.headers.common['Authorization'] = 'Token ' + token;
-                Event.$emit('login');
-
-                this.$router.push('/');
-			});
-		}
-	}
+            if (this.login.username.length>0 && this.login.password.length>0){
+                axios.post('http://smktesting.herokuapp.com/api/login/',{
+                    username:this.login.username,
+                    password:this.login.password
+                })
+                .then(response => {
+                    const token=response.data.token;
+                    localStorage.setItem('Authorization', 'Token '+token);
+                    axios.defaults.headers.common['Authorization'] = token
+                    this.$router.push('/');
+                })
+                this.emitMethod()
+            }
+            else{
+                return;
+            }
+        },
+        emitMethod () {
+            Event.$emit('logged-in', 'loggedin')
+        }
+    }
 }
 </script>
 

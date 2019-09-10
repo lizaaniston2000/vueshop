@@ -1,17 +1,17 @@
 <template>
     <div class="light__card">
         <h1>Sign Up</h1>
-        <div class="form-column_inp">
+        <form class="form-column_inp" v-on:submit.prevent='registerIt'>
             <input type="text" placeholder="username*" class="input form_input" v-model="register.username">
             <input type="password" placeholder="password*" class="input form_input" v-model="register.password">
-            <button class="but" @click='registerIt'>Sign Up</button>
-        </div>
+            <button type="submit" class="but">Sign Up</button>
+        </form>
     </div>
 </template>
 
 
-
 <script>
+import axios from 'axios'
 export default {
     data() {
 		return {
@@ -23,17 +23,22 @@ export default {
     },
     methods:{
 		registerIt() {
-		    axios.post('http://smktesting.herokuapp.com/api/register/',this.register)
-			.then(response => {
-
-			    let token=response.data.token;
-
-                localStorage.setItem('Authorization', 'Token '+ token);
-
-                this.$router.push('/thanks');
-
-                axios.defaults.headers.common['Authorization'] = 'Token ' + token;
-			});
+            if (this.register.username.length>0 && this.register.password.length>0){
+                axios.post('http://smktesting.herokuapp.com/api/register/', {
+                    username:this.register.username,
+                    password:this.register.password
+                })
+                .then(response => {
+                    console.log(response)
+                    const token=response.data.token;
+                    localStorage.setItem('Authorization', 'Token '+token);
+                    axios.defaults.headers.common['Authorization'] = token;
+                    this.$router.push('/thanks');
+                })
+            }
+            else{
+                return;
+            }
 		}
 	}
 }

@@ -5,7 +5,7 @@ import Register from './components/Register.vue';
 import Products from './components/Products.vue';
 import ProductInfo from './components/ProductInfo.vue';
 import Thanks from './components/Thanks.vue';
-import Logout from './components/Logout.vue';
+
 
 Vue.use(Router);
 
@@ -36,12 +36,6 @@ export default new Router({
         path: '/info:id',
         name: 'info',
         component: ProductInfo
-      },
-      {
-        path: '/logout',
-        name: 'logout',
-        component: Logout
-      },
-
+      }
     ]
   });

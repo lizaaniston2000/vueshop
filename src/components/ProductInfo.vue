@@ -42,7 +42,7 @@
 
 
 <script>
-import Vue from 'vue'
+import axios from 'axios'
 export default {
     data(){
         return{
@@ -87,12 +87,12 @@ export default {
             return this.product;
             }) //get one product
             .then(product => {
-                axios.post("http://smktesting.herokuapp.com/api/reviews/"+ product.id).then((response) => {
-                    text: this.comment.text;
-                    rate: this.comment.rate;
+                axios.post("http://smktesting.herokuapp.com/api/reviews/"+ product.id,this.comment).then((response) => {
+                    сonsole.log(response.data)
                 })
-            }) //post data of product 
-            this.reviews.push(new_comment) 
+                // 
+            }) 
+            this.reviews.push(new_comment)//post data of product 
         }
     },
 }
