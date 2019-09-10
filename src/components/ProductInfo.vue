@@ -77,22 +77,20 @@ export default {
             if(!token){
                 this.showAlert();
             }
-            let new_comment=new Object;
-                new_comment.text=this.comment.text;
-                new_comment.rate=this.comment.rate;
-            axios.get("http://smktesting.herokuapp.com/api/products/").then((response) => {
-                this.product = response.data.find((item) => {
-                    return (item.id === Number(this.$route.params.id));
-                });
-            return this.product;
-            }) //get one product
-            .then(product => {
-                axios.post("http://smktesting.herokuapp.com/api/reviews/"+ product.id,this.comment).then((response) => {
-                    сonsole.log(response.data)
-                })
-                // 
-            }) 
-            this.reviews.push(new_comment)//post data of product 
+            else{
+                let new_comment=new Object;
+                    new_comment.text=this.comment.text;
+                    new_comment.rate=this.comment.rate;
+                    axios.post("http://smktesting.herokuapp.com/api/reviews/"+this.product.id,{
+                        text:this.comment.text,
+                        rate:this.comment.rate
+                    }).then((response) => {
+                        console.log(response.data);
+                    })
+                this.comment.text='';
+                this.comment.rate='';
+                this.reviews.push(new_comment)//post data of product
+            } 
         }
     },
 }
@@ -170,5 +168,10 @@ export default {
         font-size: 14px;
         cursor: pointer;
         border-radius: 4px; 
+    }
+    .but:hover{
+        background-color:#808080;
+        transition: .3s;
+        color:#ffffff;    
     }
 </style>
