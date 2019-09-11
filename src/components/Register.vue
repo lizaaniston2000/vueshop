@@ -17,8 +17,10 @@ export default {
 		return {
 			register:{
 				username:"",
-				password:""
-			}
+                password:"",
+            },
+            listings: [],
+            AuthStr : 'Bearer ' + this.$cookie.get('token')
 		}
     },
     methods:{
@@ -29,10 +31,7 @@ export default {
                     password:this.register.password
                 })
                 .then(response => {
-                    console.log(response)
-                    const token=response.data.token;
-                    localStorage.setItem('Authorization', 'Token '+token);
-                    axios.defaults.headers.common['Authorization'] = token;
+                    this.$cookie.set('token',response.data.token);
                     this.$router.push('/thanks');
                 })
             }
@@ -40,7 +39,16 @@ export default {
                 return;
             }
 		}
-	}
+    },
+    created () {
+        axios.get('http://smktesting.herokuapp.com/api/register/',{'headers': { 'Authorization': this.AuthStr }})
+        .then(response => {
+            this.listings = response.data;
+        })
+        .catch((error) => {
+            console.log(error)
+        })
+    }
 }
 </script>
 

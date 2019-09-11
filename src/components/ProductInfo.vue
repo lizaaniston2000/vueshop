@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <section>
         <div class="cont">
             <div class="product_info">
                 <img :src="'http://smktesting.herokuapp.com/static'+'/'+product.img">
@@ -37,7 +37,7 @@
             </div>
             <button class="but" @click='postReview'>ok</button>
         </div>
-    </div>
+    </section>
 </template>
 
 
@@ -73,9 +73,11 @@ export default {
             this.$swal('Please sign in or sign up:)');
         },
         postReview(){
-            const token=localStorage.getItem('Authorization');
+            const token=this.$cookie.get('token');
             if(!token){
                 this.showAlert();
+                this.comment.text='';
+                this.comment.rate='';
             }
             else{
                 let new_comment=new Object;
@@ -89,7 +91,7 @@ export default {
                     })
                 this.comment.text='';
                 this.comment.rate='';
-                this.reviews.push(new_comment)//post data of product
+                this.reviews.push(new_comment) //post data of product
             } 
         }
     },

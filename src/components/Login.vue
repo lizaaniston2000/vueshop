@@ -17,7 +17,9 @@ export default {
 			login:{
 				username:"",
 				password:""
-			}
+            },
+            listings: [],
+            AuthStr : 'Bearer ' + this.$cookie.get('token')
 		}
     },
     methods:{
@@ -28,9 +30,7 @@ export default {
                     password:this.login.password
                 })
                 .then(response => {
-                    const token=response.data.token;
-                    localStorage.setItem('Authorization', 'Token '+token);
-                    axios.defaults.headers.common['Authorization'] = token
+                    this.$cookie.set('token',response.data.token);
                     this.$router.push('/');
                 })
                 this.emitMethod()
@@ -42,6 +42,15 @@ export default {
         emitMethod () {
             Event.$emit('logged-in', 'loggedin')
         }
+    },
+     created () {
+        axios.get('http://smktesting.herokuapp.com/api/login/',{'headers': { 'Authorization': this.AuthStr }})
+        .then(response => {
+            this.listings = response.data;
+        })
+        .catch((error) => {
+            console.log(error)
+        })
     }
 }
 </script>
