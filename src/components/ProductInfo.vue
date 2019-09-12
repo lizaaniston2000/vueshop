@@ -46,8 +46,8 @@ import axios from 'axios'
 export default {
     data() {
         return {
-            product:[],
-            reviews:[],
+            product: [],
+            reviews: [],
             comment: {
                 text: '',
                 rate: ''
@@ -86,7 +86,7 @@ export default {
                     axios.post("http://smktesting.herokuapp.com/api/reviews/"+this.product.id,{
                         text:this.comment.text,
                         rate:this.comment.rate,
-                    },{headers: { 'Authorization': 'Token '+token}}).then((response) => {
+                    },{ headers: { 'Authorization': 'Token '+token }}).then((response) => {
                         console.log(response.data);
                     })
                 this.comment.text='';
