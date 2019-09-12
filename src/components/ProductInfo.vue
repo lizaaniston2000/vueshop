@@ -85,8 +85,8 @@ export default {
                     new_comment.rate=this.comment.rate;
                     axios.post("http://smktesting.herokuapp.com/api/reviews/"+this.product.id,{
                         text:this.comment.text,
-                        rate:this.comment.rate
-                    }).then((response) => {
+                        rate:this.comment.rate,
+                    },{headers: { 'Authorization': 'Token '+token}}).then((response) => {
                         console.log(response.data);
                     })
                 this.comment.text='';
@@ -118,6 +118,7 @@ export default {
     h1{
         text-align: center;
         margin-top: 10px;
+        margin-bottom: 10px;
     }
     .review{
         display:flex;

@@ -5,11 +5,11 @@
         <div class="navbar-wrap">
             <router-link to="/" class="title">vueshop</router-link>
             <nav class="menu">
-              <ul class="menu__items"  v-if="status==''">
+              <ul class="menu__items"  v-if="!status">
                 <li><router-link to="/login">Sign In</router-link></li>
                 <li><router-link to="/register">Sign Up</router-link></li>
               </ul>
-              <ul class="menu__items"  v-if="status=='loggedin'">
+              <ul class="menu__items"  v-if="status">
                 <li><a href='' @click="logout">Logout</a></li>
               </ul>
             </nav>
@@ -29,27 +29,26 @@
 export default {
   data () {
     return {
-        auth:'',
-        status:''
+        status:false,
       }
     },
   methods: {
     logout () {
-      this.$cookie.delete("token");
-      this.$cookie.set('status','');
-      this.status=this.$cookie.get('status'); 
+      this.$cookie.delete("token"); 
+      Event.$emit('logout');
     }
   },
   created(){
-    this.status=this.$cookie.get('status'); 
-  },
-  mounted(){
-    Event.$on('logged-in', status => {
-      this.auth = status;
-      this.$cookie.set('status',this.auth);
-      this.status=this.$cookie.get('status');   
+    Event.$on('logged-in',() => {
+      this.status= true;
     })
-  }
+    Event.$on('logout',()=>{
+      this.status=false;
+    })
+    const token=this.$cookie.get('token'); 
+    if (token)
+      this.status=true; 
+  },
 }
 </script>
 

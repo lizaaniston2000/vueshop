@@ -9,6 +9,7 @@
     </div>
 </template>
 
+
 <script>
 import axios from 'axios'
 export default {
@@ -18,44 +19,35 @@ export default {
 				username:"",
 				password:""
             },
-            listings: [],
-            AuthStr : 'Bearer ' + this.$cookie.get('token')
 		}
     },
     methods:{
 		logItIn() {
-            if (this.login.username.length>0 && this.login.password.length>0){
+            const token=this.$cookie.get('token');
+            if (this.login.username.length>0 && this.login.password.length>0 && token!=undefined){
                 axios.post('http://smktesting.herokuapp.com/api/login/',{
                     username:this.login.username,
                     password:this.login.password
                 })
                 .then(response => {
-                    this.$cookie.set('token',response.data.token);
+                    this.$cookie.set('token', response.data.token);
                     this.$router.push('/');
+                    this.emitMethod();
                 })
-                this.emitMethod()
             }
-            else{
+            else {
                 return;
             }
         },
         emitMethod () {
-            Event.$emit('logged-in', 'loggedin')
-        }
+            Event.$emit('logged-in') //user sign in
+        },
     },
-     created () {
-        axios.get('http://smktesting.herokuapp.com/api/login/',{'headers': { 'Authorization': this.AuthStr }})
-        .then(response => {
-            this.listings = response.data;
-        })
-        .catch((error) => {
-            console.log(error)
-        })
-    }
+
 }
 </script>
 
-<style>
+<style scoped>
 .light__card{
     display: flex;
     flex-direction: column;
