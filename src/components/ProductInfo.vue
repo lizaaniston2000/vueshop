@@ -44,17 +44,17 @@
 <script>
 import axios from 'axios'
 export default {
-    data(){
-        return{
+    data() {
+        return {
             product:[],
             reviews:[],
-            comment:{
+            comment: {
                 text:'',
                 rate:''
             }
         }
     },
-    mounted:function(){
+    mounted:function() {
         axios.get("http://smktesting.herokuapp.com/api/products/").then((response) => {
             this.product = response.data.find((item) => {
                 return (item.id === Number(this.$route.params.id));
@@ -68,18 +68,18 @@ export default {
         });
     },
     methods: {
-        showAlert(){
+        showAlert() {
             // Use sweetalret2
             this.$swal('Please sign in or sign up:)');
         },
-        postReview(){
+        postReview() {
             const token=this.$cookie.get('token');
-            if(!token){
+            if (!token) {
                 this.showAlert();
                 this.comment.text='';
                 this.comment.rate='';
             }
-            else{
+            else {
                 let new_comment=new Object;
                     new_comment.text=this.comment.text;
                     new_comment.rate=this.comment.rate;

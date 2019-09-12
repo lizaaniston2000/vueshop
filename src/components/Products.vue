@@ -15,12 +15,12 @@
 <script>
 import axios from 'axios'
 export default {
-    data(){
-        return{
+    data() {
+        return {
             products:[]
         }
     },
-    mounted: function(){
+    mounted: function() {
         axios.get("http://smktesting.herokuapp.com/api/products/").then((response) => {
             this.products = response.data
         })

@@ -38,7 +38,7 @@ export default {
       Event.$emit('logout');
     }
   },
-  created(){
+  created() {
     Event.$on('logged-in',() => {
       this.status= true;
     })

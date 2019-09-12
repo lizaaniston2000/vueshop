@@ -15,7 +15,7 @@ import axios from 'axios'
 export default {
     data() {
 		return {
-			login:{
+			login: {
 				username:"",
 				password:""
             },
@@ -24,7 +24,7 @@ export default {
     methods:{
 		logItIn() {
             const token=this.$cookie.get('token');
-            if (this.login.username.length>0 && this.login.password.length>0 && token!=undefined){
+            if (this.login.username.length>0 && this.login.password.length>0 && token!=undefined) {
                 axios.post('http://smktesting.herokuapp.com/api/login/',{
                     username:this.login.username,
                     password:this.login.password

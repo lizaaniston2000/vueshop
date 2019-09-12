@@ -21,9 +21,9 @@ export default {
             },
 		}
     },
-    methods:{
+    methods: {
 		registerIt() {
-            if (this.register.username.length>0 && this.register.password.length>0){
+            if (this.register.username.length>0 && this.register.password.length>0) {
                 axios.post('http://smktesting.herokuapp.com/api/register/', {
                     username:this.register.username,
                     password:this.register.password
@@ -33,7 +33,7 @@ export default {
                     this.$router.push('/thanks');
                 })
             }
-            else{
+            else {
                 return;
             }
 		},
