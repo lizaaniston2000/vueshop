@@ -29,7 +29,7 @@
 export default {
   data () {
     return {
-        status:false,
+        status: false,
       }
     },
   methods: {
@@ -45,10 +45,10 @@ export default {
     Event.$on('logout',()=>{
       this.status=false;
     })
-    const token=this.$cookie.get('token'); 
+    const token=this.$cookie.get('token');
     if (token)
       this.status=true; 
-  },
+  }
 }
 </script>
 

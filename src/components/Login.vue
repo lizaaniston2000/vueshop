@@ -12,27 +12,35 @@
 
 <script>
 import axios from 'axios'
+import Vue from 'vue'
 export default {
     data() {
 		return {
 			login: {
-				username:"",
-				password:""
+				username: "",
+				password: ""
             },
 		}
     },
     methods:{
 		logItIn() {
-            const token=this.$cookie.get('token');
-            if (this.login.username.length>0 && this.login.password.length>0 && token!=undefined) {
+            if (this.login.username.length>0 && this.login.password.length>0) {
                 axios.post('http://smktesting.herokuapp.com/api/login/',{
                     username:this.login.username,
                     password:this.login.password
                 })
                 .then(response => {
-                    this.$cookie.set('token', response.data.token);
-                    this.$router.push('/');
-                    this.emitMethod();
+                    //проверка на то зарегистрирован ли пользователь
+                    if (response.data.token!=undefined) {
+                        this.$cookie.set('token', response.data.token);
+                        this.$router.push('/');
+                        this.emitMethod();
+                    }
+                    else {
+                        Vue.swal('Please sign up');
+                        this.login.username='';
+                        this.login.password='';
+                    }
                 })
             }
             else {

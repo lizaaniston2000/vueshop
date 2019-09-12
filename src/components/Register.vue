@@ -12,12 +12,13 @@
 
 <script>
 import axios from 'axios'
+import Vue from 'vue'
 export default {
     data() {
 		return {
-			register:{
-				username:"",
-                password:"",
+			register: {
+				username: "",
+                password: "",
             },
 		}
     },
@@ -29,14 +30,22 @@ export default {
                     password:this.register.password
                 })
                 .then(response => {
-                    this.$cookie.set('token', response.data.token);
-                    this.$router.push('/thanks');
+                    //проверка на то зарегистрирован ли пользователь ранее
+                    if (response.data.token!=undefined) {
+                        this.$cookie.set('token', response.data.token); 
+                        this.$router.push('/thanks');
+                    }
+                    else {
+                        Vue.swal('This user already exists.');
+                        this.register.username='';
+                        this.register.password='';
+                    }
                 })
             }
             else {
                 return;
             }
-		},
+        },
     }
 }
 </script>

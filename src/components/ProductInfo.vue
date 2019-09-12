@@ -49,8 +49,8 @@ export default {
             product:[],
             reviews:[],
             comment: {
-                text:'',
-                rate:''
+                text: '',
+                rate: ''
             }
         }
     },
